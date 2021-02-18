@@ -31,5 +31,4 @@ Route::resource('cursos', 'CursoController');
 Route::resource('alumnos', 'AlumnoController');
 Route::resource('domicilio', 'DomicilioController');
 Route::resource('matriculas', 'MatriculaController');
-
-
+Route::post('act_notas', 'NotaController@InsertarNotas');

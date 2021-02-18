@@ -26,8 +26,10 @@ Route::get('secciones/{gra_cod}', 'SeccionController@ListarSeccion');
 Route::get('ubi_deps', 'UbigeoController@ListarUbidep');
 Route::get('ubi_provs/{id}', 'UbigeoController@ListarUbiprov');
 Route::get('ubi_dists/{id}', 'UbigeoController@ListarUbidist');
+Route::get('login/{usu_login}/{usu_contra}', 'LoginController@UsuLogin');
 Route::resource('cursos', 'CursoController');
 Route::resource('alumnos', 'AlumnoController');
 Route::resource('domicilio', 'DomicilioController');
 Route::resource('matriculas', 'MatriculaController');
+
 

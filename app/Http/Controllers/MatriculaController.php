@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use App\Matricula;
+use App\Curso;
+use App\Nota;
 
 class MatriculaController extends Controller
 {
@@ -31,6 +33,19 @@ class MatriculaController extends Controller
             $matricula->gra_cod = $request->gra_cod;
             $matricula->sec_cod = $request->sec_cod;
             $matricula->save();
+            $cursos = Curso::where('gra_cod', '=', $request->gra_cod)->get();
+            if(isset($cursos)){
+                foreach($cursos as $curso){
+                    for($i = 1; $i <= 3; $i++){
+                        $nota = new Nota();
+                        $nota->cur_cod = $curso->cur_cod;
+                        $nota->mat_num = $request->mat_num;
+                        $nota->no_calificacion = 0;
+                        $nota->no_periodo = $i;
+                        $nota->save();
+                    }
+                }
+            }
             $result = ['mat_num' => $matricula->mat_num,
                     'created' => true];
         }catch(Throwable $e){

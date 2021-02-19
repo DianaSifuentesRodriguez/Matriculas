@@ -16,8 +16,8 @@ class CursoController extends Controller
      */
     public function index()
     {
-        $curso = DB::table('curso as c')->join('nivel as n', 'c.niv_cod', '=', 'n.niv_cod')
-            ->select('c.cur_cod', 'c.cur_descripcion', 'c.cur_abreviatura', 'c.niv_cod', 'n.niv_descripcion')->get();
+        $curso = DB::table('curso as c')->join('grado as g', 'c.gra_cod', '=', 'g.gra_cod')
+            ->select('c.cur_cod', 'c.cur_descripcion', 'c.cur_abreviatura', 'c.gra_cod', 'g.gra_descripcion')->get();
         return response()->json($curso);
     }
 

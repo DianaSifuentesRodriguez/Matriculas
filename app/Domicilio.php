@@ -9,5 +9,5 @@ class Domicilio extends Model
     protected $table = "alumno_domicilio";
     protected $primaryKey = "alu_dni";
     public $timestamps = false;
-    protected $filliable = ['ald_direccion','ald_telefono','department_id','province_id','district_id'];
+    protected $filliable = ['alu_dni','ald_direccion','ald_telefono','department_id','province_id','district_id'];
 }

@@ -35,3 +35,4 @@ Route::resource('matriculas', 'MatriculaController');
 Route::post('act_notas', 'NotaController@InsertarNotas');
 Route::post('ins_asigs', 'AsignacionController@InsertarAsignacion');
 Route::delete('elim_asigs/{id}', 'AsignacionController@EliminarAsignacion');
+Route::resource('login','LoginController'); 

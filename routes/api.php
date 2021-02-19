@@ -32,7 +32,7 @@ Route::resource('cursos', 'CursoController');
 Route::resource('alumnos', 'AlumnoController');
 Route::resource('domicilio', 'DomicilioController');
 Route::resource('matriculas', 'MatriculaController');
+Route::resource('login','LoginController'); 
 Route::post('act_notas', 'NotaController@InsertarNotas');
 Route::post('ins_asigs', 'AsignacionController@InsertarAsignacion');
 Route::delete('elim_asigs/{id}', 'AsignacionController@EliminarAsignacion');
-Route::resource('login','LoginController'); 

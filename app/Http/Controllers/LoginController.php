@@ -19,6 +19,10 @@ class LoginController extends Controller
         $login = DB::table('usuario as u')-> where('u.usu_login','=',$log)->where('u.usu_contra','=',$pass)->get();
         return response()->json($login);
     }
+    public function verifySession($id){
+        $login = DB::table('usuario as u')-> where('u.per_dni','=',$id)->get();
+        return response()->json($login);
+    }
     public function store(Request $request)
     {
         try{

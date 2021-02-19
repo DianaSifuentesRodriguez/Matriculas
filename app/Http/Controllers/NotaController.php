@@ -14,13 +14,13 @@ class NotaController extends Controller
         $notas = DB::table('nota as n')->join('matricula as m', 'm.mat_num', '=', 'n.mat_num')
         ->join('alumno as a', 'a.alu_dni', '=', 'm.alu_dni')->where('n.cur_cod', '=', $cur_cod)
         ->where('m.gra_cod', '=', $gra_cod)->where('m.sec_cod', '=', $sec_cod)
-        ->select(DB::raw('a.alu_dni, CONCAT(a.alu_apellidop, \' \',a.alu_apellidop,\' \',a.alu_nombres) as Alumno, m.mat_num,
-            (select no.no_calificacion as "Periodo 1" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=1 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
-            (select no.no_id as "ID Nota 1" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=1 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
-		    (select no.no_calificacion as "Periodo 2" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=2 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
-            (select no.no_id as "ID Nota 2" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=2 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
-		    (select no.no_calificacion as "Periodo 3" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=3 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
-            (select no.no_id as "ID Nota 3" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=3 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' )
+        ->select(DB::raw('a.alu_dni, CONCAT(a.alu_apellidop, \' \',a.alu_apellidom,\' \',a.alu_nombres) as Alumno, m.mat_num,
+            (select no.no_calificacion as "Periodo1" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=1 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
+            (select no.no_id as "IDNota1" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=1 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
+		    (select no.no_calificacion as "Periodo2" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=2 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
+            (select no.no_id as "IDNota2" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=2 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
+		    (select no.no_calificacion as "Periodo3" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=3 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' ),
+            (select no.no_id as "IDNota3" from nota no inner join matricula ma on no.mat_num = ma.mat_num inner join curso cu on no.cur_cod = cu.cur_cod where no.no_periodo=3 and ma.mat_num = m.mat_num and no.cur_cod = '.$cur_cod.' )
             ')) 
         ->groupBy('a.alu_dni', 'm.mat_num')->orderBy('a.alu_apellidop')
         ->get();
@@ -35,8 +35,8 @@ class NotaController extends Controller
         foreach($array as $item){
             // echo $item['id_nota'].'<br>';
             
-            $nota = Nota::findOrFail($item['id_nota']);
-            $nota->no_calificacion =$item['nota'];
+            $nota = Nota::findOrFail($item['no_id']);
+            $nota->no_calificacion =$item['no_calificacion'];
             $nota->update();
             // return $nota;    
         }

@@ -37,7 +37,10 @@ class CursoController extends Controller
         }
     }
 
-    
+    public function GetCursoByGrado($id){
+        $curso = DB::table('curso')->where('gra_cod','=',$id)->get();
+        return response()->json($seccion);
+    }
     public function show($id)
     {
         return Curso::findOrFail($id);

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use App\Personal;
-
+use App\Login;
 
 class PersonalController extends Controller
 {
@@ -17,31 +17,57 @@ class PersonalController extends Controller
      */
     public function index()
     {
-       $personal = DB::table('personal as p')->join('nivel as n', 'n.niv_cod', '=', 'p.niv_cod')->where('p.per_estado', '=', '1')
-                ->select('p.per_dni', 'p.per_apellidos', 'p.per_nombres', 'p.per_direccion', 
-                'p.per_estadocivil', 'p.per_telefono', 'p.per_segurosocial', 'p.per_ingreso', 'p.niv_cod', 'n.niv_descripcion')->get(); 
-       return response()->json($personal);
+        $personal = DB::table('personal as p')->join('nivel as n', 'n.niv_cod', '=', 'p.niv_cod')->where('p.per_estado', '=', '1')
+            ->select(
+                'p.per_dni',
+                'p.per_apellidos',
+                'p.per_nombres',
+                'p.per_direccion',
+                'p.per_estadocivil',
+                'p.per_telefono',
+                'p.per_segurosocial',
+                'p.per_ingreso',
+                'p.niv_cod',
+                'n.niv_descripcion'
+            )->get();
+        return response()->json($personal);
     }
 
     public function store(Request $request)
     {
-        try{
+        try {
             $personal = new Personal();
-            $personal->per_dni=$request->per_dni;
-            $personal->per_apellidos=$request->per_apellidos;
-            $personal->per_nombres=$request->per_nombres;
-            $personal->per_direccion=$request->per_direccion;
-            $personal->per_estadocivil=$request->per_estadocivil;
-            $personal->per_telefono=$request->per_telefono;
-            $personal->per_segurosocial=$request->per_segurosocial;
-            $personal->per_ingreso=$request->per_ingreso;
-            $personal->per_estado='1';
-            $personal->niv_cod=$request->niv_cod;
+            $personal->per_dni = $request->per_dni;
+            $personal->per_apellidos = $request->per_apellidos;
+            $personal->per_nombres = $request->per_nombres;
+            $personal->per_direccion = $request->per_direccion;
+            $personal->per_estadocivil = $request->per_estadocivil;
+            $personal->per_telefono = $request->per_telefono;
+            $personal->per_segurosocial = $request->per_segurosocial;
+            $personal->per_ingreso = $request->per_ingreso;
+            $personal->per_estado = '1';
+            $personal->niv_cod = $request->niv_cod;
+
+            $result = [
+                'per_dni' => $personal->per_dni,
+                'created' => true
+            ];
+
+            $usuario = new Login();
+            $usuario->per_dni = $request->per_dni;
+            $usuario->usu_fech_reg = null;
+            $usuario->usu_contra = $request->per_dni;
+            $usuario->usu_login = $request->per_dni;
+            $usuario->usu_rol = 'PROF';
+            $usuario->usu_estado = 1;
             $personal->save();
-            $result = ['per_dni' => $personal->per_dni,
-                    'created' => true];
+            $usuario->save();
+            $result = [
+                'alu_dni' => $usuario->per_dni,
+                'created' => true
+            ];
             return $result;
-        }catch(Throwable $e){
+        } catch (Throwable $e) {
             return "Error - " . $e->getMessage();
         }
     }
@@ -60,7 +86,7 @@ class PersonalController extends Controller
 
     public function destroy($id)
     {
-        $personal=Personal::findOrFail($id);
+        $personal = Personal::findOrFail($id);
         $personal->delete();
         return 204;
     }

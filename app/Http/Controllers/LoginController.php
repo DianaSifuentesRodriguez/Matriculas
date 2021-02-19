@@ -11,8 +11,8 @@ class LoginController extends Controller
    
     public function index()
     {
-        $logi = DB::table('usuario as u')-> select('u.per_dni','u.usu_fech_reg','u.usu_contra','u.usu_login','u.usu_rol','u.usu_estado')->get();
-        return response()->json($logi);
+        $login = DB::table('usuario as u')-> select('u.per_dni','u.usu_fech_reg','u.usu_contra','u.usu_login','u.usu_rol','u.usu_estado')->get();
+        return response()->json($login);
     }
     public function UsuLogin($log, $pass)
     {
@@ -50,7 +50,12 @@ class LoginController extends Controller
     public function update(Request $request, $id)
     {
         $usuario = Login::findOrFail($id);
-        $usuario->Update($request->all());
+        $usuario->usu_fech_reg = $request->usu_fech_reg;
+        $usuario->usu_contra = $request->usu_contra;
+        $usuario->usu_login = $request->usu_login;
+        $usuario->usu_rol = $request->usu_rol;
+        $usuario->usu_estado = $request->usu_estado;
+        $usuario->update();
         return $usuario;
     }
 

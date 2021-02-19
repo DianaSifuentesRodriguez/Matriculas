@@ -68,7 +68,6 @@ class AlumnoController extends Controller
         return $alumno;
     }
 
-    
     public function destroy($id)
     {
         $alumno=Alumno::findOrFail($id);

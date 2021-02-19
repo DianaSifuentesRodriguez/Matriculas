@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use App\Curso;
-
+use App\Grado;
 class CursoController extends Controller
 {
     /**
@@ -16,22 +16,22 @@ class CursoController extends Controller
      */
     public function index()
     {
-        $curso = DB::table('curso as c')->join('grado as g', 'c.gra_cod', '=', 'g.gra_cod')
-            ->select('c.cur_cod', 'c.cur_descripcion', 'c.cur_abreviatura', 'c.gra_cod', 'g.gra_descripcion')->get();
+        $curso = DB::table('curso as c')->join('grado as g', 'c.gra_cod', '=', 'g.gra_cod')->join('nivel as n', 'n.niv_cod', '=', 'g.niv_cod')
+            ->select('c.cur_cod', 'c.cur_descripcion', 'c.cur_abreviatura', 'n.niv_descripcion','c.gra_cod', 'g.gra_descripcion')->get();
         return response()->json($curso);
     }
 
     public function store(Request $request)
     {
         try{
-            $curso = new Curso();
-            $curso->cur_descripcion = $request->cur_descripcion;
-            $curso->cur_abreviatura = $request->cur_abreviatura;
-            $curso->niv_cod = $request->niv_cod;
-            $curso->save();
-            $result = ['cur_descripcion' => $curso->cur_descripcion,
-                        'created' => true];
-            return $result;
+            $grados = Grado::where('niv_cod', '=', $request->niv_cod)->get();
+            foreach ($grados as $grado) {
+                $curso = new Curso();
+                $curso->cur_descripcion = $request->cur_descripcion;
+                $curso->cur_abreviatura = $request->cur_abreviatura;
+                $curso->gra_cod = $grado->gra_cod;
+                $curso->save();
+            }
         }catch(Throwable $e){
             return "Error - " . $e->getMessage();
         }

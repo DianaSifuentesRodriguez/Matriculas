@@ -25,6 +25,7 @@ class DomicilioController extends Controller
         try{
             $domicilio = new Domicilio();
             
+            $domicilio->alu_dni = $request->alu_dni;
             $domicilio->ald_direccion = $request->ald_direccion;
             $domicilio->ald_telefono = $request->ald_telefono;
             $domicilio->department_id = $request->department_id;
